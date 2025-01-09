@@ -118,9 +118,11 @@
         <div class="logo notranslate">OnlineWebStop</div>
         <div id="translator"></div>
         <div class="quote">Estimated Quote: $0.00</div>
+        <div class="currency-label">Currency:</div>
         <select class="currency-selector">
             <!-- Currency options will be populated dynamically -->
         </select>
+        <div></div>
     </div>
     <div class="content">
         <div class="table-container">
@@ -136,12 +138,12 @@
                     <tr>
                         <td>Frontend Development</td>
                         <td>Custom frontend development</td>
-                        <td><input type="checkbox" data-price="500"></td>
+                        <td><input type="checkbox" data-price="1500"></td>
                     </tr>
                     <tr>
                         <td>Backend Development</td>
                         <td>Custom backend development</td>
-                        <td><input type="checkbox" data-price="700"></td>
+                        <td><input type="checkbox" data-price="2500"></td>
                     </tr>
                     <tr>
                         <td>Number of Pages</td>
@@ -149,15 +151,67 @@
                         <td>
                             <div class="number-selector">
                                 <button onclick="decrement(this)">-</button>
-                                <input type="number" value="1" min="1" data-price="100">
+                                <input type="number" value="1" min="1" data-price="250">
                                 <button onclick="increment(this)">+</button>
                             </div>
                         </td>
                     </tr>
                     <tr>
+                        <td>User Subscription</td>
+                        <td>Email waitlists or subscriptions</td>
+                        <td><input type="checkbox" data-price="400"></td>
+                    </tr>
+                        <td>Account System</td>
+                        <td>Secure user sign up, login and logout authorization</td>
+                        <td><input type="checkbox" data-price="1200"></td>
+                    </tr>
+                        <td>Content Management</td>
+                        <td>Blogs and articles, editing, and document uploads</td>
+                        <td><input type="checkbox" data-price="1500"></td>
+                    </tr>
+                        <td>SEO Optimization</td>
+                        <td>Optimize your site for search engines</td>
+                        <td><input type="checkbox" data-price="100"></td>
+                    </tr>
+                        <td>E-commerce</td>
+                        <td>Add shopping items</td>
+                        <td><input type="checkbox" data-price="600"></td>
+                    </tr>
+                        <td>Chat Integration</td>
+                        <td>Add forums and chats</td>
+                        <td><input type="checkbox" data-price="800"></td>
+                    </tr>
+                        <td>E-mail</td>
+                        <td>Add an e-mail application/td>
+                        <td><input type="checkbox" data-price="400"></td>
+                    </tr>
+                        <td>Payment System</td>
+                        <td>Add payment channels</td>
+                        <td><input type="checkbox" data-price="300"></td>
+                    </tr>
+                        <td>Customized Website Design</td>
+                        <td>Additional advanced customization for your site</td>
+                        <td><input type="checkbox" data-price="500"></td>
+                    </tr>
                         <td>Responsive Design</td>
                         <td>Make the site responsive</td>
                         <td><input type="checkbox" data-price="300"></td>
+                    </tr>
+                        <td>Database storage</td>
+                        <td>Store information in a database</td>
+                        <td><input type="checkbox" data-price="800"></td>
+                    </tr>
+                        <td>AI Chatbot</td>
+                        <td>Artificial Intelligence assistant integration</td>
+                        <td><input type="checkbox" data-price="300"></td>
+                    </tr>
+                        <td>Virtual Items</td>
+                        <td>Currency, points and rewards</td>
+                        <td><input type="checkbox" data-price="500"></td>
+                    </tr>
+                        <td>E-mail Marketing</td>
+                        <td>Promotional e-mails</td>
+                        <td><input type="checkbox" data-price="100"></td>
                     </tr>
                 </tbody>
             </table>
@@ -167,24 +221,24 @@
         function createStar() {
             const star = document.createElement('div');
             star.classList.add('star');
-
+        
             const size = Math.random() * 5 + 3; // Random size between 3 and 8
             star.style.width = `${size}px`;
             star.style.height = `${size}px`;
-
+        
             const xPosition = Math.random() * window.innerWidth;
             star.style.left = `${xPosition}px`;
             star.style.top = `-${size}px`; // Start from the top of the screen
-
+        
             const duration = (Math.random() * 3 + 2) * (8 - size); // Random duration between 2 and 5 seconds, adjusted by size
             star.style.animation = `fall ${duration}s linear`;
-
+        
             document.body.appendChild(star);
-
+        
             star.addEventListener('animationend', () => {
                 star.remove();
             });
-
+        
             // Remove the star when it reaches the bottom of the screen plus 10 pixels
             setTimeout(() => {
                 if (star.getBoundingClientRect().top >= window.innerHeight + 10) {
@@ -192,28 +246,37 @@
                 }
             }, duration * 1000);
         }
-
+        
         setInterval(createStar, 1000); // Create a new star every 1000 milliseconds
-
+        
+        let totalPrice = 0;
+        let exchangeRate = 1;
+        let selectedCurrency = 'USD';
+        
         function updateQuote() {
-            let total = 0;
+            totalPrice = 0;
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked) {
-                    total += parseFloat(checkbox.dataset.price);
+                    totalPrice += parseFloat(checkbox.dataset.price);
                 }
             });
             document.querySelectorAll('.number-selector input').forEach(input => {
-                total += parseFloat(input.dataset.price) * parseInt(input.value);
+                totalPrice += parseFloat(input.dataset.price) * parseInt(input.value);
             });
-            document.querySelector('.quote').textContent = `Estimated Quote: $${total.toFixed(2)}`;
+            updateDisplayQuote();
         }
-
+        
+        function updateDisplayQuote() {
+            const displayPrice = (totalPrice * exchangeRate).toFixed(2);
+            document.querySelector('.quote').textContent = `Estimated Quote: ${selectedCurrency} ${displayPrice}`;
+        }
+        
         function increment(button) {
             const input = button.previousElementSibling;
             input.value = parseInt(input.value) + 1;
             updateQuote();
         }
-
+        
         function decrement(button) {
             const input = button.nextElementSibling;
             if (parseInt(input.value) > 1) {
@@ -221,36 +284,34 @@
             }
             updateQuote();
         }
-
+        
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.addEventListener('change', updateQuote);
         });
-
+        
         document.querySelectorAll('.number-selector input').forEach(input => {
             input.addEventListener('input', updateQuote);
         });
-
+        
         async function fetchExchangeRates() {
             const response = await fetch('https://v6.exchangerate-api.com/v6/e206222571d2812161af5650/latest/USD');
             const data = await response.json();
             const rates = data.conversion_rates;
             const currencySelector = document.querySelector('.currency-selector');
-
+        
             for (const currency in rates) {
                 const option = document.createElement('option');
                 option.value = currency;
                 option.textContent = currency;
                 currencySelector.appendChild(option);
             }
-
+        
             currencySelector.addEventListener('change', function() {
-                const currency = this.value;
-                const total = parseFloat(document.querySelector('.quote').textContent.replace('Estimated Quote: $', ''));
-                const rate = rates[currency];
-                document.querySelector('.quote').textContent = `Estimated Quote: ${currency} ${(total * rate).toFixed(2)}`;
+                selectedCurrency = this.value;
+                exchangeRate = rates[selectedCurrency];
+                updateDisplayQuote();
             });
         }
-
         fetchExchangeRates();
     </script>
 </body>
