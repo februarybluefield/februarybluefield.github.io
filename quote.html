@@ -126,9 +126,9 @@
     <div class="top-bar">
         <div class="logo notranslate">OnlineWebStop</div>
         <div id="translator"></div>
-        <div class="quote">Estimated Quote: USD 0.00</div>
+        <div class="quote">Estimated Quote: USD 250.00</div>
         <div class="currency-label">Currency:</div>
-        <select class="currency-selector">
+        <select class="currency-selector notranslate">
             <!-- Currency options will be populated dynamically -->
         </select>
         <div></div>
@@ -210,11 +210,6 @@
                         <td><input type="checkbox" data-price="500"></td>
                     </tr>
                     <tr>
-                        <td>Responsive Design</td>
-                        <td>Make the site responsive</td>
-                        <td><input type="checkbox" data-price="300"></td>
-                    </tr>
-                    <tr>
                         <td>Database storage</td>
                         <td>Store information in a database</td>
                         <td><input type="checkbox" data-price="800"></td>
@@ -275,7 +270,7 @@
         
         setInterval(createStar, 1000); // Create a new star every 1000 milliseconds
         
-        let totalPrice = 0;
+        let totalPrice = 250;
         let exchangeRate = 1;
         let selectedCurrency = 'USD';
         
